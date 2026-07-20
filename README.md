@@ -1,12 +1,14 @@
 # Express Auth API
 
-A lightweight and structured user authentication API built with Node.js, Express.js, and MySQL. It features password hashing using `bcrypt` and handles authentication queries against a database using a connection pool.
+A lightweight and structured user authentication API built with Node.js, Express.js, and MySQL using Sequelize ORM. It features password hashing using `bcrypt` and handles authentication using JSON Web Tokens (JWT).
 
 ## Features
 
+- **User Registration**: Create new user accounts with username, email, and password.
 - **User Authentication**: Secure user login with email and password.
-- **Password Security**: Password verification powered by `bcrypt`.
-- **Database Pooling**: High-performance MySQL connection pool via `mysql2/promise`.
+- **JWT Security**: Token-based authentication using `jsonwebtoken`.
+- **Password Security**: Password hashing and verification powered by `bcrypt`.
+- **Sequelize ORM**: Database interaction using Sequelize for better data modeling and query management.
 - **Layered Architecture**: Clean MVC-like separation of concerns (Routes, Controllers, Services, Models, and Config).
 - **Environment Configuration**: Easy deployment settings via `dotenv`.
 
@@ -14,8 +16,9 @@ A lightweight and structured user authentication API built with Node.js, Express
 
 - **Runtime**: Node.js
 - **Framework**: Express.js (v5)
-- **Database Driver**: MySQL2 (with Promise wrapper)
-- **Security**: Bcrypt
+- **ORM**: Sequelize
+- **Database Driver**: MySQL2
+- **Security**: Bcrypt, JSON Web Token (JWT)
 - **Process Manager (Dev)**: Nodemon
 
 ## Project Structure
@@ -24,12 +27,12 @@ A lightweight and structured user authentication API built with Node.js, Express
 express_auth/
 ├── src/
 │   ├── config/
-│   │   └── database.js      # MySQL connection pool setup
+│   │   └── sequelize.js     # Sequelize configuration and initialization
 │   ├── controllers/
 │   │   └── AuthController.js # Handles HTTP request/response cycle
 │   ├── middlewares/         # Middleware folder (tracked with .gitkeep)
 │   ├── models/
-│   │   └── User.js          # DB queries for User data
+│   │   └── User.js          # Sequelize User model definition
 │   ├── routes/
 │   │   └── AuthRoutes.js    # Routes for auth module (/api/auth)
 │   ├── services/
@@ -39,7 +42,6 @@ express_auth/
 │   └── server.js            # Server entrypoint (loads env & starts server)
 ├── .env                     # Local environment variables (ignored by Git)
 ├── .gitignore               # Ignored files configuration
-├── index.js                 # Legacy/Boilerplate entrypoint
 ├── package.json             # NPM dependencies and scripts
 └── README.md                # Project documentation
 ```
@@ -69,6 +71,8 @@ DB_PORT=3306
 DB_NAME=express_auth
 DB_USER=root
 DB_PASSWORD=your_mysql_password
+
+JWT_SECRET=your_jwt_secret_key
 ```
 
 ## Running the Project
@@ -88,6 +92,35 @@ npm start
 ```
 
 ## API Overview
+
+### Register User
+
+- **URL**: `/api/auth/register`
+- **Method**: `POST`
+- **Headers**: `Content-Type: application/json`
+- **Body**:
+  ```json
+  {
+    "username": "johndoe",
+    "email": "user@example.com",
+    "password": "yourpassword"
+  }
+  ```
+
+- **Success Response**:
+  - **Code**: `201 Created`
+  - **Content**:
+    ```json
+    {
+      "success": true,
+      "message": "Registrasi berhasil",
+      "data": {
+        "id": 1,
+        "username": "johndoe",
+        "email": "user@example.com"
+      }
+    }
+    ```
 
 ### Authenticate User
 
@@ -111,7 +144,7 @@ npm start
       "message": "Login berhasil",
       "data": {
         "id": 1,
-        "name": "John Doe",
+        "username": "johndoe",
         "email": "user@example.com"
       }
     }
