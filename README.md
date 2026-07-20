@@ -21,7 +21,7 @@ A lightweight and structured user authentication API built with Node.js, Express
 ## Project Structure
 
 ```text
-learn_express/
+express_auth/
 ├── src/
 │   ├── config/
 │   │   └── database.js      # MySQL connection pool setup
