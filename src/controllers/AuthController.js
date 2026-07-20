@@ -23,6 +23,32 @@ const login = async (req, res) => {
   }
 };
 
+const register = async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+
+    const newUser = await AuthService.registerUser(username, email, password);
+
+    return res.status(201).json({
+      success: true,
+      message: "Registrasi berhasil",
+      data: {
+        id: newUser.id,
+        username: newUser.username,
+        email: newUser.email,
+      },
+    });
+  } catch (error) {
+    // Sesuaikan status kode error berdasarkan jenis error
+    const statusCode = error.message.includes('duplikasi') || error.message.includes('Duplicate entry') ? 409 : 400; 
+    return res.status(statusCode).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   login,
+  register,
 };
