@@ -4,15 +4,16 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await AuthService.login(email, password);
+    const { token, user } = await AuthService.loginUser(email, password);
 
     return res.status(200).json({
       success: true,
       message: "Login berhasil",
       data: {
         id: user.id,
-        name: user.name,
+        username: user.username,
         email: user.email,
+        token: token,
       },
     });
   } catch (error) {

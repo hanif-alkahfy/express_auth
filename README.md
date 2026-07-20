@@ -17,7 +17,7 @@ A lightweight and structured user authentication API built with Node.js, Express
 - **Runtime**: Node.js
 - **Framework**: Express.js (v5)
 - **ORM**: Sequelize
-- **Database Driver**: MySQL2
+- **Database**: MySQL
 - **Security**: Bcrypt, JSON Web Token (JWT)
 - **Process Manager (Dev)**: Nodemon
 
@@ -145,7 +145,8 @@ npm start
       "data": {
         "id": 1,
         "username": "johndoe",
-        "email": "user@example.com"
+        "email": "user@example.com",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
       }
     }
     ```
@@ -156,7 +157,7 @@ npm start
     ```json
     {
       "success": false,
-      "message": "Email atau password salah"
+      "message": "User tidak ditemukan."
     }
     ```
 
